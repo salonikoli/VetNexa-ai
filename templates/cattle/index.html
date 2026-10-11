@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cattle Disease Detector</title>
+  <meta name="description" content="Upload a cattle image to detect Foot & Mouth Disease, Lumpy Skin Disease using AI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='cattle/styles.css') }}" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">VetNexa AI</a>
+    <a href="/" class="back-link">← Back to Home</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-text">
+        <div class="page-tag">Cattle Disease Detection</div>
+        <h1>Cattle Disease<br><span>Detector</span></h1>
+        <p>Upload a clear photo of your cattle to detect diseases like Foot &amp; Mouth Disease and Lumpy Skin Disease with AI precision.</p>
+        <div class="disease-chips">
+          <span class="chip">Foot &amp; Mouth Disease</span>
+          <span class="chip">Lumpy Skin Disease</span>
+          <span class="chip chip-green">Healthy</span>
+        </div>
+      </div>
+      <div class="page-hero-img">
+        <div class="animal-circle"></div>
+        <img src="{{ url_for('static', filename='images/cow.jpg') }}" alt="Cattle" class="animal-float-img" />
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- UPLOAD CARD -->
+    <div class="upload-card" id="uploadCard">
+      <div class="upload-card-header">
+        <span class="upload-step-badge">Step 1</span>
+        <h2>Upload Cattle Image</h2>
+        <p>Choose a clear, well-lit photo of your cattle for the most accurate results</p>
+      </div>
+
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">📷</div>
+        <div class="upload-zone-title">Click to upload or drag &amp; drop</div>
+        <div class="upload-zone-sub">Supports JPG, PNG, WEBP · Max 10MB</div>
+        <input type="file" id="fileInput" accept="image/*" onchange="previewImage()" style="display:none;" />
+      </div>
+
+      <div id="previewContainer" class="preview-container" style="display:none;">
+        <img id="imagePreview" alt="Preview" class="preview-img" />
+        <div class="preview-overlay">
+          <button class="change-btn" onclick="document.getElementById('fileInput').click()">Change Image</button>
+        </div>
+      </div>
+
+      <div id="buttonContainer" style="display:none;">
+        <button class="analyze-btn" onclick="uploadImage()" id="analyzeBtn">
+          <span id="btnText">🔬 Analyze Image</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT CARD -->
+    <div id="resultSection" class="result-section" style="display:none;">
+
+      <div class="result-card" id="resultCard">
+        <!-- filled by JS -->
+      </div>
+
+    </div>
+
+  </main>
+
+
+
+  <script src="{{ url_for('static', filename='cattle/script.js') }}"></script>
+</body>
+</html>
+

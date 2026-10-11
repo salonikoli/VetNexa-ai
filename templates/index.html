@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VetNexa AI — Disease Detection System</title>
+  <meta name="description"
+    content="AI-powered livestock disease detection for dogs, cattle, goats and poultry. Upload an image and get instant diagnosis with treatment recommendations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #1a56db;
+      --primary-light: #e8efff;
+      --primary-dark: #1341a6;
+      --accent: #f0a500;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --light-bg: #f5f8ff;
+      --white: #ffffff;
+      --border: #e5e9f2;
+      --success: #10b981;
+      --card-shadow: 0 4px 24px rgba(26, 86, 219, 0.08);
+      --card-hover-shadow: 0 12px 40px rgba(26, 86, 219, 0.18);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 60px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(26, 86, 219, 0.06);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all 0.22s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 14px rgba(26, 86, 219, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26, 86, 219, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 60px 0;
+      gap: 40px;
+      min-height: 580px;
+    }
+
+    .hero-content {}
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-light);
+      border: 1px solid rgba(26, 86, 219, 0.2);
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .hero h1 .highlight {
+      color: var(--primary);
+      position: relative;
+    }
+
+    .hero h1 .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      border-radius: 4px;
+      opacity: 0.35;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-trust {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .trust-item .trust-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    /* Hero image area */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 520px;
+    }
+
+    .hero-bg-circle {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #dce9ff 0%, #eef3ff 60%, transparent 100%);
+      bottom: 0;
+      right: 0;
+      z-index: 0;
+    }
+
+    .hero-animal-img {
+      position: relative;
+      z-index: 2;
+      height: 480px;
+      object-fit: contain;
+      filter: drop-shadow(0 24px 40px rgba(26, 86, 219, 0.12));
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .hero-floating-badge {
+      position: absolute;
+      z-index: 3;
+      background: white;
+      border-radius: 14px;
+      padding: 10px 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+
+    .hero-floating-badge.badge-1 {
+      top: 80px;
+      left: 0;
+    }
+
+    .hero-floating-badge.badge-2 {
+      bottom: 60px;
+      left: -20px;
+    }
+
+    .badge-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .badge-icon.green {
+      background: #d1fae5;
+    }
+
+    .badge-icon.blue {
+      background: var(--primary-light);
+    }
+
+    /* ─── WAVE DIVIDER ─── */
+    .wave-divider {
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    /* ─── STATS BAND ─── */
+    .stats-band {
+      background: var(--primary);
+      padding: 36px 60px;
+    }
+
+    .stats-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -1px;
+    }
+
+    .stat-value span {
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ─── SECTION HEADER ─── */
+    .section-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .section-header p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ─── ANIMALS SECTION ─── */
+    .animals-section {
+      padding: 80px 60px;
+      background: var(--white);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .animals-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .animal-card {
+      border-radius: 20px;
+      overflow: visible;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      display: block;
+      background: var(--light-bg);
+      border: 1.5px solid var(--border);
+      position: relative;
+    }
+
+    .animal-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--card-hover-shadow);
+      border-color: transparent;
+    }
+
+    .animal-card-img-wrap {
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      background: var(--card-bg, #e8efff);
+      border-radius: 18px 18px 0 0;
+    }
+
+    .animal-card-img {
+      height: 220px;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+    }
+
+    .animal-card:hover .animal-card-img {
+      transform: scale(1.06) translateY(-4px);
+    }
+
+    .animal-card-body {
+      padding: 20px 22px 24px;
+    }
+
+    .animal-card-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 10px;
+      background: var(--tag-bg, #e8efff);
+      color: var(--tag-color, var(--primary));
+    }
+
+    .animal-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .animal-card p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .disease-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 18px;
+    }
+
+    .dtag {
+      font-size: 0.68rem;
+      padding: 3px 9px;
+      border-radius: 50px;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .animal-card-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: var(--btn-bg, var(--primary));
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .animal-card:hover .animal-card-btn {
+      opacity: 0.9;
+    }
+
+    .arrow-icon {
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .animal-card:hover .arrow-icon {
+      transform: translateX(4px);
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-section {
+      background: var(--light-bg);
+      padding: 80px 60px;
+    }
+
+    .how-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .how-img-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .how-mini-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s;
+    }
+
+    .how-mini-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .how-mini-card img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+
+    .how-mini-card .mini-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 10px;
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num-box {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(26, 86, 219, 0.3);
+    }
+
+    .step-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 0.87rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── RESULT TEASER SECTION ─── */
+    .result-teaser {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 60px;
+    }
+
+    .result-card-preview {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    .result-card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .result-card-header .result-animal-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    .result-card-header h3 {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .result-card-header p {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+
+    .confidence-badge {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 6px 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .result-card-body {
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .result-info-box {
+      background: var(--light-bg);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .result-info-box h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .result-info-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .result-info-box ul li {
+      font-size: 0.83rem;
+      color: var(--text);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+
+    .result-info-box ul li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav {
+        padding: 14px 24px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 40px 24px 0;
+        min-height: auto;
+      }
+
+      .hero-visual {
+        height: 320px;
+      }
+
+      .hero-animal-img {
+        height: 300px;
+      }
+
+      .hero-bg-circle {
+        width: 280px;
+        height: 280px;
+      }
+
+      .animals-section {
+        padding: 60px 24px;
+      }
+
+      .animals-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .how-section {
+        padding: 60px 24px;
+      }
+
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-teaser {
+        padding: 60px 24px;
+      }
+
+      .result-card-body {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .animals-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-band {
+        padding: 28px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav>
+    <a href="/" class="nav-logo">VetNexa AI</a>
+    <ul class="nav-links">
+      <li><a href="#animals">Our Services</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#results">Results</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#animals" class="btn btn-outline">View Services</a>
+      <a href="#animals" class="btn btn-primary">Get Started →</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="live-dot"></div>
+        AI-Powered Disease Detection
+      </div>
+      <h1>
+        Protect Your<br>
+        <span class="highlight">Livestock</span><br>
+        With Smart AI
+      </h1>
+      <p class="hero-desc">
+        Upload a photo of your animal and get instant disease detection with causes, precautions, and medicine
+        recommendations.
+      </p>
+      <div class="hero-actions">
+        <a href="#animals" class="btn btn-primary" style="padding:13px 28px; font-size:1rem;">
+          Start Detection →
+        </a>
+        <a href="#how-it-works" class="btn btn-outline" style="padding:13px 28px; font-size:1rem;">
+          How it works
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <div class="trust-icon">🎯</div>
+          <span>95% Accuracy</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">⚡</div>
+          <span>Fast Analysis</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🌿</div>
+          <span>15+ Diseases</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-bg-circle"></div>
+
+      <div class="hero-floating-badge badge-1">
+        <div class="badge-icon green">✅</div>
+        <div>
+          <div style="font-size:0.78rem; color:#6b7280; font-weight:500;">Result</div>
+          <div>Healthy Cattle</div>
+        </div>
+      </div>
+
+      <img src="{{ url_for('static', filename='images/cow.jpg') }}" alt="Healthy Livestock Cow"
+        class="hero-animal-img" />
+
+      <div class="hero-floating-badge badge-2">
+        <div class="badge-icon blue">🔬</div>
+        <div>
+          <div style="font-size:0.78rem; color:#6b7280; font-weight:500;">AI Analysis</div>
+          <div>Confidence: 97.4%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS BAND ─── -->
+  <div class="stats-band">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-value">4<span>+</span></div>
+        <div class="stat-label">Animal Species</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">15<span>+</span></div>
+        <div class="stat-label">Diseases Detected</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">95<span>%</span></div>
+        <div class="stat-label">Model Accuracy</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">&lt;10<span>s</span></div>
+        <div class="stat-label">Diagnosis Time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ANIMAL CARDS ─── -->
+  <section class="animals-section" id="animals">
+    <div class="section-header">
+      <div class="section-tag">🐾 Our Services</div>
+      <h2>Select Your Animal Type</h2>
+      <p>Choose a category below to begin AI-powered disease detection for your livestock or pet</p>
+    </div>
+
+    <div class="animals-grid">
+
+      <!-- Dogs -->
+      <a href="/dogs/" class="animal-card"
+        style="--card-bg:#fff5eb; --tag-bg:#fff0dc; --tag-color:#d97706; --btn-bg:#d97706;">
+        <div class="animal-card-img-wrap" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);">
+          <img src="{{ url_for('static', filename='images/dog.jpg') }}" alt="Dog" class="animal-card-img" />
+        </div>
+        <div class="animal-card-body">
+          <span class="animal-card-tag" style="background:#fff0dc; color:#d97706;">🐕 Canine</span>
+          <h3>Dog Skin Detector</h3>
+          <p>Detect common canine skin disorders from a photo of your dog's skin or coat.</p>
+          <div class="disease-tags">
+            <span class="dtag">Dermatitis</span>
+            <span class="dtag">Ringworm</span>
+            <span class="dtag">Demodicosis</span>
+            <span class="dtag">Fungal</span>
+          </div>
+          <div class="animal-card-btn" style="background:#d97706;">
+            Analyze Dog Image <span class="arrow-icon">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cattle -->
+      <a href="/cattle/" class="animal-card"
+        style="--card-bg:#eff6ff; --tag-bg:#dbeafe; --tag-color:#1d4ed8; --btn-bg:#1d4ed8;">
+        <div class="animal-card-img-wrap" style="background: linear-gradient(135deg, #e8efff 0%, #d1e0ff 100%);">
+          <img src="{{ url_for('static', filename='images/cow.jpg') }}" alt="Cattle" class="animal-card-img" />
+        </div>
+        <div class="animal-card-body">
+          <span class="animal-card-tag" style="background:#dbeafe; color:#1d4ed8;">Bovine</span>
+          <h3>Cattle Disease Detector</h3>
+          <p>Identify critical cattle diseases early including Lumpy Skin & Foot and Mouth Disease.</p>
+          <div class="disease-tags">
+            <span class="dtag">Foot & Mouth</span>
+            <span class="dtag">Lumpy Skin</span>
+            <span class="dtag">Healthy</span>
+          </div>
+          <div class="animal-card-btn" style="background:#1d4ed8;">
+            Analyze Cattle Image <span class="arrow-icon">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Goats -->
+      <a href="/goats/" class="animal-card"
+        style="--card-bg:#f0fdf4; --tag-bg:#dcfce7; --tag-color:#16a34a; --btn-bg:#16a34a;">
+        <div class="animal-card-img-wrap" style="background: linear-gradient(135deg, #e8fdf0 0%, #d1fce7 100%);">
+          <img src="{{ url_for('static', filename='images/goat.jpg') }}" alt="Goat" class="animal-card-img" />
+        </div>
+        <div class="animal-card-body">
+          <span class="animal-card-tag" style="background:#dcfce7; color:#16a34a;">🐐 Livestock</span>
+          <h3>Goat Disease Detector</h3>
+          <p>Detect skin and coat conditions affecting goats using advanced image recognition.</p>
+          <div class="disease-tags">
+            <span class="dtag">Scabies</span>
+            <span class="dtag">Ringworm</span>
+            <span class="dtag">Flea Allergy</span>
+            <span class="dtag">Healthy</span>
+          </div>
+          <div class="animal-card-btn" style="background:#16a34a;">
+            Analyze Goat Image <span class="arrow-icon">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Poultry -->
+      <a href="/poultry/" class="animal-card"
+        style="--card-bg:#fdf4ff; --tag-bg:#f3e8ff; --tag-color:#7c3aed; --btn-bg:#7c3aed;">
+        <div class="animal-card-img-wrap" style="background: linear-gradient(135deg, #faf0ff 0%, #f0e0ff 100%);">
+          <img src="{{ url_for('static', filename='images/chicken.jpg') }}" alt="Poultry" class="animal-card-img" />
+        </div>
+        <div class="animal-card-body">
+          <span class="animal-card-tag" style="background:#f3e8ff; color:#7c3aed;">🐔 Poultry</span>
+          <h3>Poultry Disease Detector</h3>
+          <p>Identify poultry diseases through fecal image analysis — Coccidiosis, Salmonella & more.</p>
+          <div class="disease-tags">
+            <span class="dtag">Coccidiosis</span>
+            <span class="dtag">Salmonella</span>
+            <span class="dtag">Newcastle</span>
+            <span class="dtag">Healthy</span>
+          </div>
+          <div class="animal-card-btn" style="background:#7c3aed;">
+            Analyze Poultry Image <span class="arrow-icon">→</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="how-section" id="how-it-works">
+    <div class="how-inner">
+      <div class="how-grid">
+        <div class="how-img-side">
+          <div class="how-mini-card">
+            <img src="{{ url_for('static', filename='images/cow.jpg') }}" alt="Cattle" />
+            <div class="mini-label">Cattle</div>
+          </div>
+          <div class="how-mini-card">
+            <img src="{{ url_for('static', filename='images/dog.jpg') }}" alt="Dog" />
+            <div class="mini-label">🐕 Dogs</div>
+          </div>
+          <div class="how-mini-card">
+            <img src="{{ url_for('static', filename='images/goat.jpg') }}" alt="Goat" />
+            <div class="mini-label">🐐 Goats</div>
+          </div>
+          <div class="how-mini-card">
+            <img src="{{ url_for('static', filename='images/chicken.jpg') }}" alt="Poultry" />
+            <div class="mini-label">🐔 Poultry</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-tag">📋 Process</div>
+          <h2 style="font-size:1.9rem; font-weight:800; margin:12px 0 32px; letter-spacing:-0.5px;">How It Works</h2>
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-num-box">1</div>
+              <div class="step-content">
+                <h4>Choose Your Animal</h4>
+                <p>Select from Dogs, Cattle, Goats, or Poultry based on what animal needs diagnosis.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num-box">2</div>
+              <div class="step-content">
+                <h4>Upload a Photo</h4>
+                <p>Take or upload a clear photo of the animal's affected area or full body image.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num-box">3</div>
+              <div class="step-content">
+                <h4>Get AI Diagnosis</h4>
+                <p>Our CNN model analyzes the image and returns the disease name, causes, precautions, and medications
+                  instantly.</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 36px;">
+            <a href="#animals" class="btn btn-primary" style="padding:13px 28px; font-size:0.95rem;">Start Diagnosis Now
+              →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RESULT PREVIEW ─── -->
+  <section class="result-teaser" id="results">
+    <div class="section-header">
+      <div class="section-tag">📊 Sample Output</div>
+      <h2>What You'll Get</h2>
+      <p>A clear, detailed diagnosis report with actionable treatment information</p>
+    </div>
+
+    <div class="result-card-preview">
+      <div class="result-card-header">
+        <div class="result-animal-icon">🩺</div>
+        <div>
+          <h3>Lumpy Skin Disease Detected</h3>
+          <p>Cattle · AI Analysis Complete</p>
+        </div>
+        <div class="confidence-badge">Confidence: 94.2%</div>
+      </div>
+      <div class="result-card-body">
+        <div class="result-info-box">
+          <h4>⚠️ Causes</h4>
+          <ul>
+            <li>Lumpy Skin Disease Virus (LSDV)</li>
+            <li>Insect bites (mosquitoes, flies)</li>
+            <li>Direct contact with infected animals</li>
+            <li>Contaminated water and feed</li>
+          </ul>
+        </div>
+        <div class="result-info-box">
+          <h4>🛡️ Precautions</h4>
+          <ul>
+            <li>Isolate infected animals immediately</li>
+            <li>Vaccinate the entire herd</li>
+            <li>Eliminate insect vectors</li>
+            <li>Disinfect all equipment</li>
+          </ul>
+        </div>
+        <div class="result-info-box">
+          <h4>💊 Medications</h4>
+          <ul>
+            <li>Anti-inflammatory drugs</li>
+            <li>Antibiotics for secondary infections</li>
+            <li>LSD attenuated live vaccine</li>
+            <li>Wound disinfectants (Iodine)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+</body>
+
+</html>

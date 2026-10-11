@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+
+# User-uploaded images and generated data
+**/uploads/
+
+# Local configuration and environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

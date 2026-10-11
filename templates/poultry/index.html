@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poultry Disease Detector</title>
+  <meta name="description" content="Detect poultry diseases like Coccidiosis, Salmonella and Newcastle using AI image analysis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='poultry/styles.css') }}" />
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">VetNexa AI</a>
+    <a href="/" class="back-link">← Back to Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-text">
+        <div class="page-tag">Poultry Disease Detection</div>
+        <h1>Poultry Disease<br><span>Detector</span></h1>
+        <p>Upload a fecal or body image of your poultry to detect diseases like Coccidiosis, Salmonella, and Newcastle Disease using AI.</p>
+        <div class="disease-chips">
+          <span class="chip">Coccidiosis</span>
+          <span class="chip">Salmonella</span>
+          <span class="chip">Newcastle Disease</span>
+          <span class="chip chip-green">Healthy</span>
+        </div>
+      </div>
+      <div class="page-hero-img">
+        <div class="animal-circle"></div>
+        <img src="{{ url_for('static', filename='images/chicken.jpg') }}" alt="Poultry" class="animal-float-img" />
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <div class="upload-card" id="uploadCard">
+      <div class="upload-card-header">
+        <span class="upload-step-badge">Step 1</span>
+        <h2>Upload Poultry Image</h2>
+        <p>Upload a fecal sample image or full body photo of your poultry for accurate disease detection</p>
+      </div>
+
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">📷</div>
+        <div class="upload-zone-title">Click to upload or drag &amp; drop</div>
+        <div class="upload-zone-sub">Supports JPG, PNG, WEBP · Max 10MB</div>
+        <input type="file" id="fileInput" accept="image/*" onchange="previewImage()" style="display:none;" />
+      </div>
+
+      <div id="previewContainer" class="preview-container" style="display:none;">
+        <img id="imagePreview" alt="Preview" class="preview-img" />
+        <div class="preview-overlay">
+          <button class="change-btn" onclick="document.getElementById('fileInput').click()">Change Image</button>
+        </div>
+      </div>
+
+      <div id="buttonContainer" style="display:none;">
+        <button class="analyze-btn" onclick="uploadImage()" id="analyzeBtn">
+          <span id="btnText">🔬 Analyze Image</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="resultSection" class="result-section" style="display:none;">
+      <div class="result-card" id="resultCard"></div>
+    </div>
+  </main>
+
+
+
+  <script src="{{ url_for('static', filename='poultry/script.js') }}"></script>
+</body>
+</html>
+
